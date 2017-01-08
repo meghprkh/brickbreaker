@@ -1,6 +1,19 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include <iostream>
+#include <cmath>
+#include <fstream>
+#include <vector>
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 GLFWwindow* initGLFW (int width, int height);
 GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path);
 struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloat* vertex_buffer_data, const GLfloat* color_buffer_data, GLenum fill_mode=GL_FILL);
@@ -40,5 +53,10 @@ extern float triangle_rot_dir;
 extern float rectangle_rot_dir;
 extern bool triangle_rot_status;
 extern bool rectangle_rot_status;
+
+// ---- Logic ----
+
+enum brick_color_t {BRICK_RED, BRICK_GREEN, BRICK_BLACK};
+//typedef enum brick_color_t brick_color_t;
 
 #endif

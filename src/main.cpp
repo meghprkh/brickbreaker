@@ -12,6 +12,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "main.h"
+#include "brick.h"
 
 using namespace std;
 
@@ -28,6 +29,9 @@ bool triangle_rot_status = true;
 bool rectangle_rot_status = true;
 
 VAO *triangle, *rectangle;
+
+Brick b1;
+
 
 // Creates the triangle object used in this sample code
 void createTriangle ()
@@ -145,6 +149,8 @@ void draw ()
   // draw3DObject draws the VAO given to it using current MVP matrix
   draw3DObject(rectangle);
 
+  b1.draw(VP);
+
   // Increment angles
   float increments = 1;
 
@@ -152,7 +158,6 @@ void draw ()
   triangle_rotation = triangle_rotation + increments*triangle_rot_dir*triangle_rot_status;
   rectangle_rotation = rectangle_rotation + increments*rectangle_rot_dir*rectangle_rot_status;
 }
-
 
 /* Initialize the OpenGL rendering properties */
 /* Add all the models to be created here */
@@ -162,6 +167,8 @@ void initGL (GLFWwindow* window, int width, int height)
 	// Create the models
 	createTriangle (); // Generate the VAO, VBOs, vertices data & copy into the array buffer
 	createRectangle ();
+    b1 = Brick(BRICK_GREEN);
+    b1.set_position(3, 0);
 
 	// Create and compile our GLSL program from the shaders
 	programID = LoadShaders( "Sample_GL.vert", "Sample_GL.frag" );
@@ -172,7 +179,7 @@ void initGL (GLFWwindow* window, int width, int height)
 	reshapeWindow (window, width, height);
 
     // Background color of the scene
-    glClearColor (0.3f, 0.3f, 0.3f, 0.0f); // R, G, B, A
+    glClearColor (1, 1, 1, 0.0f); // R, G, B, A
 	glClearDepth (1.0f);
 
 	glEnable (GL_DEPTH_TEST);
