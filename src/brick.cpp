@@ -1,9 +1,10 @@
 #include "brick.h"
 #include "main.h"
 
-Brick::Brick(brick_color_t color)
+Brick::Brick(brick_color_t color, float speed)
 {
     this->color = color;
+    this->speed = speed;
     // GL3 accepts only Triangles. Quads are not supported
     static const GLfloat vertex_buffer_data [] = {
       -0.2,-0.2,0, // vertex 1
@@ -45,4 +46,8 @@ void Brick::draw(glm::mat4 VP) {
 
 void Brick::set_position(float x, float y) {
     this->position = glm::vec3(x, y, 0);
+}
+
+void Brick::tick() {
+    this->position.y -= this->speed;
 }

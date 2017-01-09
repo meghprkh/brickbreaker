@@ -72,6 +72,11 @@ void draw ()
   green_basket.draw(VP);
 }
 
+void tick_elements() {
+    b1.tick();
+    b2.tick();
+}
+
 /* Initialize the OpenGL rendering properties */
 /* Add all the models to be created here */
 void initGL (GLFWwindow* window, int width, int height)
@@ -134,17 +139,16 @@ int main (int argc, char** argv)
         // Swap Frame Buffer in double buffering
         glfwSwapBuffers(window);
 
-        // Poll for Keyboard and mouse events
-        glfwPollEvents();
-
         // Control based on time (Time based transformation like 5 degrees rotation every 0.5s)
         current_time = glfwGetTime(); // Time in seconds
-        if ((current_time - last_update_time) >= 0.5) { // atleast 0.5s elapsed since last frame
-            // do something every 0.5 seconds ..
+        if ((current_time - last_update_time) >= 1/24) {
+            tick_elements();
             last_update_time = current_time;
         }
+
+        // Poll for Keyboard and mouse events
+        glfwPollEvents();
     }
 
-    glfwTerminate();
-//    exit(EXIT_SUCCESS);
+    quit(window);
 }

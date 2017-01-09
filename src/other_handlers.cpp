@@ -24,7 +24,7 @@ void quit(GLFWwindow *window)
 {
     glfwDestroyWindow(window);
     glfwTerminate();
-//    exit(EXIT_SUCCESS);
+    exit(EXIT_SUCCESS);
 }
 
 /* Executed when window is resized to 'width' and 'height' */

@@ -7,11 +7,13 @@ class Brick
 {
 public:
     Brick() {};
-    Brick(brick_color_t color);
+    Brick(brick_color_t color, float speed = 0.025);
     brick_color_t color;
     glm::vec3 position;
     void draw(glm::mat4 VP);
     void set_position(float x, float y);
+    void tick();
+    float speed;
 private:
     VAO* object;
 };
