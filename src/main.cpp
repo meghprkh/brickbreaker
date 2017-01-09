@@ -14,6 +14,7 @@
 #include "main.h"
 #include "brick.h"
 #include "mirror.h"
+#include "basket.h"
 
 using namespace std;
 
@@ -26,6 +27,7 @@ GLuint programID;
 
 Mirror m1, m2;
 Brick b1, b2;
+Basket red_basket, green_basket;
 
 /* Render the scene with openGL */
 /* Edit this function according to your assignment */
@@ -65,6 +67,9 @@ void draw ()
 
   b1.draw(VP);
   b2.draw(VP);
+
+  red_basket.draw(VP);
+  green_basket.draw(VP);
 }
 
 /* Initialize the OpenGL rendering properties */
@@ -81,6 +86,12 @@ void initGL (GLFWwindow* window, int width, int height)
     b1.set_position(3, 0);
     b2 = Brick(BRICK_BLACK);
     b2.set_position(-3, 0);
+
+
+    red_basket = Basket(BRICK_RED);
+    red_basket.set_position(3, -3.5);
+    green_basket = Basket(BRICK_GREEN);
+    green_basket.set_position(-3, -3.5);
 
 	// Create and compile our GLSL program from the shaders
 	programID = LoadShaders( "Sample_GL.vert", "Sample_GL.frag" );
