@@ -13,6 +13,7 @@
 
 #include "main.h"
 #include "brick.h"
+#include "mirror.h"
 
 using namespace std;
 
@@ -30,7 +31,8 @@ bool rectangle_rot_status = true;
 
 VAO *triangle, *rectangle;
 
-Brick b1;
+Mirror m1, m2;
+Brick b1, b2;
 
 
 // Creates the triangle object used in this sample code
@@ -149,7 +151,11 @@ void draw ()
   // draw3DObject draws the VAO given to it using current MVP matrix
   draw3DObject(rectangle);
 
+  m1.draw(VP);
+  m2.draw(VP);
+
   b1.draw(VP);
+  b2.draw(VP);
 
   // Increment angles
   float increments = 1;
@@ -167,8 +173,13 @@ void initGL (GLFWwindow* window, int width, int height)
 	// Create the models
 	createTriangle (); // Generate the VAO, VBOs, vertices data & copy into the array buffer
 	createRectangle ();
-    b1 = Brick(BRICK_GREEN);
+    m1 = Mirror(0, 0, 0);
+    m2 = Mirror(0, 0, -45);
+
+    b1 = Brick(BRICK_RED);
     b1.set_position(3, 0);
+    b2 = Brick(BRICK_BLACK);
+    b2.set_position(-3, 0);
 
 	// Create and compile our GLSL program from the shaders
 	programID = LoadShaders( "Sample_GL.vert", "Sample_GL.frag" );
