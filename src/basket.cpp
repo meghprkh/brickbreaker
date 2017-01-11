@@ -15,20 +15,8 @@ Basket::Basket(brick_color_t color)
       -0.5,-0.3,0  // vertex 1
     };
 
-    static GLfloat color_data_red [] = {
-        1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0
-    };
-    static GLfloat color_data_green [] = {
-        0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0
-    };
-
-    static GLfloat *color_buffer_data;
-    if (color == BRICK_RED) color_buffer_data = color_data_red;
-    else if (color == BRICK_GREEN) color_buffer_data = color_data_green;
-    else printf("Error - not red or green color\n");
-
     // create3DObject creates and returns a handle to a VAO that can be used later
-    this->object = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data, color_buffer_data, GL_FILL);
+    this->object = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data, color == BRICK_RED ? 1 : 0, color == BRICK_GREEN ? 1 : 0, 0, GL_FILL);
 }
 
 void Basket::draw(glm::mat4 VP) {

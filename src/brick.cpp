@@ -16,23 +16,8 @@ Brick::Brick(brick_color_t color, float speed)
       -0.2,-0.2,0  // vertex 1
     };
 
-    static GLfloat color_data_red [6*3] = {
-        1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0
-    };
-    static GLfloat color_data_green [6*3] = {
-        0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0
-    };
-    static GLfloat color_data_black [6*3] = {
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-    };
-
-    static GLfloat *color_buffer_data;
-    if (color == BRICK_RED) color_buffer_data = color_data_red;
-    else if (color == BRICK_GREEN) color_buffer_data = color_data_green;
-    else color_buffer_data = color_data_black;
-
     // create3DObject creates and returns a handle to a VAO that can be used later
-    this->object = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data, color_buffer_data, GL_FILL);
+    this->object = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data, color == BRICK_RED ? 1 : 0, color == BRICK_GREEN ? 1 : 0, 0, GL_FILL);
 }
 
 void Brick::draw(glm::mat4 VP) {

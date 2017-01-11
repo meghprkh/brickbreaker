@@ -17,18 +17,7 @@ Mirror::Mirror(float x, float y, float rotation)
         0.05,  1.2, 0, 0.2, 1.35, 0,
     };
 
-    static const GLfloat color_buffer_data [] = {
-        0.1, 0.2, 0.7, 0.1, 0.2, 0.7,
-        0.1, 0.2, 0.7, 0.1, 0.2, 0.7,
-        0.1, 0.2, 0.7, 0.1, 0.2, 0.7,
-        0.1, 0.2, 0.7, 0.1, 0.2, 0.7,
-        0.1, 0.2, 0.7, 0.1, 0.2, 0.7,
-        0.1, 0.2, 0.7, 0.1, 0.2, 0.7,
-        0.1, 0.2, 0.7, 0.1, 0.2, 0.7,
-        0.1, 0.2, 0.7, 0.1, 0.2, 0.7,
-        0.1, 0.2, 0.7, 0.1, 0.2, 0.7
-    };
-    this->object = create3DObject(GL_LINES, 18, vertex_buffer_data, color_buffer_data, GL_LINE);
+    this->object = create3DObject(GL_LINES, 18, vertex_buffer_data, 0.1, 0.2, 0.7, GL_LINE);
 }
 
 void Mirror::draw(glm::mat4 VP) {
