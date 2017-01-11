@@ -72,10 +72,23 @@ void draw ()
   green_basket.draw(VP);
 }
 
+void tick_input(GLFWwindow* window) {
+    int left = glfwGetKey(window, GLFW_KEY_LEFT);
+    int right = glfwGetKey(window, GLFW_KEY_RIGHT);
+    int alt = glfwGetKey(window, GLFW_KEY_LEFT_ALT) || glfwGetKey(window, GLFW_KEY_RIGHT_ALT);
+    int ctrl = glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) || glfwGetKey(window, GLFW_KEY_RIGHT_CONTROL);
+    if (ctrl) {
+        if (left) red_basket.move(DIR_LEFT);
+        else if (right) red_basket.move(DIR_RIGHT);
+    } else if (alt) {
+        if (left) green_basket.move(DIR_LEFT);
+        else if (right) green_basket.move(DIR_RIGHT);
+    }
+}
+
 void tick_elements() {
     b1.tick();
     b2.tick();
-    red_basket.move(DIR_LEFT);
 }
 
 /* Initialize the OpenGL rendering properties */
@@ -120,6 +133,7 @@ void initGL (GLFWwindow* window, int width, int height)
     cout << "GLSL: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
 }
 
+
 int main (int argc, char** argv)
 {
 	int width = 600;
@@ -144,6 +158,7 @@ int main (int argc, char** argv)
         current_time = glfwGetTime(); // Time in seconds
         if ((current_time - last_update_time) >= 1/24) {
             tick_elements();
+            tick_input(window);
             last_update_time = current_time;
         }
 
