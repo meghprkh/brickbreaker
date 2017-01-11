@@ -55,5 +55,6 @@ extern GLMatrices Matrices;
 // ---- Logic ----
 
 enum brick_color_t {BRICK_RED, BRICK_GREEN, BRICK_BLACK};
+enum direction_t {DIR_UP, DIR_RIGHT, DIR_DOWN, DIR_LEFT};
 
 #endif

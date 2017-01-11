@@ -3,6 +3,7 @@
 #ifndef BASKET_H
 #define BASKET_H
 
+#define BASKET_SPEED 0.05
 
 class Basket
 {
@@ -13,6 +14,7 @@ public:
     glm::vec3 position;
     void draw(glm::mat4 VP);
     void set_position(float x, float y);
+    void move(direction_t dir);
 private:
     VAO* object;
 };

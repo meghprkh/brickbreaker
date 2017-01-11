@@ -31,3 +31,8 @@ void Basket::draw(glm::mat4 VP) {
 void Basket::set_position(float x, float y) {
     this->position = glm::vec3(x, y, 0);
 }
+
+void Basket::move(direction_t dir) {
+    if (dir == DIR_LEFT) this->position.x -= BASKET_SPEED;
+    else if (dir == DIR_RIGHT) this->position.x += BASKET_SPEED;
+}

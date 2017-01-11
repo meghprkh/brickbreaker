@@ -75,6 +75,7 @@ void draw ()
 void tick_elements() {
     b1.tick();
     b2.tick();
+    red_basket.move(DIR_LEFT);
 }
 
 /* Initialize the OpenGL rendering properties */
