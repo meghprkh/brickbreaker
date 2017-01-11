@@ -17,6 +17,8 @@
 #include "basket.h"
 #include "timer.h"
 
+#define MAX_BRICKS 100
+
 using namespace std;
 
 GLMatrices Matrices;
@@ -27,7 +29,8 @@ GLuint programID;
  **************************/
 
 Mirror m1, m2;
-Brick b1, b2;
+Brick bricks[MAX_BRICKS];
+bool bricks_present[MAX_BRICKS];
 Basket red_basket, green_basket;
 
 /* Render the scene with openGL */
@@ -66,8 +69,9 @@ void draw ()
   m1.draw(VP);
   m2.draw(VP);
 
-  b1.draw(VP);
-  b2.draw(VP);
+  for (int i = 0; i < MAX_BRICKS; i++)
+      if (bricks_present[i])
+          bricks[i].draw(VP);
 
   red_basket.draw(VP);
   green_basket.draw(VP);
@@ -88,9 +92,10 @@ void tick_input(GLFWwindow* window) {
 }
 
 void tick_elements() {
-    b1.tick();
-    b2.tick();
-    if (detect_collision(b1.bounding_box(), red_basket.bounding_box())) printf("something\n");
+    for (int i = 0; i < MAX_BRICKS; i++)
+        if (bricks_present[i])
+            bricks[i].tick();
+//    if (detect_collision(b1.bounding_box(), red_basket.bounding_box())) printf("something\n");
 }
 
 /* Initialize the OpenGL rendering properties */
@@ -103,11 +108,9 @@ void initGL (GLFWwindow* window, int width, int height)
     m1 = Mirror(0, 0, 0);
     m2 = Mirror(0, 0, -45);
 
-    b1 = Brick(BRICK_RED);
-    b1.set_position(3, 0);
-    b2 = Brick(BRICK_BLACK);
-    b2.set_position(-3, 0);
-
+    for (int i = 0; i < MAX_BRICKS; i++) {
+        bricks_present[i] = false;
+    }
 
     red_basket = Basket(BRICK_RED);
     red_basket.set_position(3, -3.5);
@@ -138,6 +141,7 @@ void initGL (GLFWwindow* window, int width, int height)
 
 int main (int argc, char** argv)
 {
+    srand(time(0));
 	int width = 600;
 	int height = 600;
 
@@ -145,7 +149,7 @@ int main (int argc, char** argv)
 
 	initGL (window, width, height);
 
-    Timer t1s(1), t24(1/24);
+    Timer t1s(1), t24(1/24), brickTimer(0.1);
 
     /* Draw in loop */
     while (!glfwWindowShouldClose(window)) {
@@ -165,6 +169,17 @@ int main (int argc, char** argv)
 
         if (t1s.processTick()) {
             // happens every 1 second
+        }
+
+        if (brickTimer.processTick()) {
+            for (int i = 0; i < MAX_BRICKS; i++) {
+                if (!bricks_present[i]) {
+                    bricks[i] = Brick(static_cast<brick_color_t>(rand() % 3));
+                    bricks[i].set_position(((double) rand()/RAND_MAX - 0.5)*8, 4.5);
+                    bricks_present[i] = true;
+                    break;
+                }
+            }
         }
 
         // Poll for Keyboard and mouse events
