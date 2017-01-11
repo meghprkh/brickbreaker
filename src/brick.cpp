@@ -36,3 +36,9 @@ void Brick::set_position(float x, float y) {
 void Brick::tick() {
     this->position.y -= this->speed;
 }
+
+bounding_box_t Brick::bounding_box() {
+    float x = this->position.x, y = this->position.y;
+    bounding_box_t bbox = { x, y, 0.4, 0.4 };
+    return bbox;
+}

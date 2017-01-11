@@ -36,3 +36,8 @@ void Basket::move(direction_t dir) {
     if (dir == DIR_LEFT) this->position.x -= BASKET_SPEED;
     else if (dir == DIR_RIGHT) this->position.x += BASKET_SPEED;
 }
+bounding_box_t Basket::bounding_box() {
+    float x = this->position.x, y = this->position.y;
+    bounding_box_t bbox = { x, y, 1, 0.6 };
+    return bbox;
+}

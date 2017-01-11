@@ -89,6 +89,7 @@ void tick_input(GLFWwindow* window) {
 void tick_elements() {
     b1.tick();
     b2.tick();
+    if (detect_collision(b1.bounding_box(), red_basket.bounding_box())) printf("something\n");
 }
 
 /* Initialize the OpenGL rendering properties */
@@ -167,4 +168,9 @@ int main (int argc, char** argv)
     }
 
     quit(window);
+}
+
+bool detect_collision(bounding_box_t a, bounding_box_t b) {
+    return (abs(a.x - b.x) * 2 < (a.width + b.width)) &&
+           (abs(a.y - b.y) * 2 < (a.height + b.height));
 }
