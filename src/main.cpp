@@ -15,6 +15,7 @@
 #include "brick.h"
 #include "mirror.h"
 #include "basket.h"
+#include "timer.h"
 
 using namespace std;
 
@@ -144,7 +145,7 @@ int main (int argc, char** argv)
 
 	initGL (window, width, height);
 
-    double last_update_time = glfwGetTime(), current_time;
+    Timer t1s(1), t24(1/24);
 
     /* Draw in loop */
     while (!glfwWindowShouldClose(window)) {
@@ -155,12 +156,15 @@ int main (int argc, char** argv)
         // Swap Frame Buffer in double buffering
         glfwSwapBuffers(window);
 
-        // Control based on time (Time based transformation like 5 degrees rotation every 0.5s)
-        current_time = glfwGetTime(); // Time in seconds
-        if ((current_time - last_update_time) >= 1/24) {
+        // Process timers
+
+        if (t24.processTick()) {
             tick_elements();
             tick_input(window);
-            last_update_time = current_time;
+        }
+
+        if (t1s.processTick()) {
+            // happens every 1 second
         }
 
         // Poll for Keyboard and mouse events
