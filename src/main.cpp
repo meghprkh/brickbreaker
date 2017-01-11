@@ -23,6 +23,7 @@ using namespace std;
 
 GLMatrices Matrices;
 GLuint programID;
+GLFWwindow* window;
 
 /**************************
  * Customizable functions *
@@ -32,6 +33,8 @@ Mirror m1, m2;
 Brick bricks[MAX_BRICKS];
 bool bricks_present[MAX_BRICKS];
 Basket red_basket, green_basket;
+
+int score;
 
 /* Render the scene with openGL */
 /* Edit this function according to your assignment */
@@ -93,9 +96,25 @@ void tick_input(GLFWwindow* window) {
 
 void tick_elements() {
     for (int i = 0; i < MAX_BRICKS; i++)
-        if (bricks_present[i])
+        if (bricks_present[i]) {
             bricks[i].tick();
-//    if (detect_collision(b1.bounding_box(), red_basket.bounding_box())) printf("something\n");
+
+            bounding_box_t bbox = bricks[i].bounding_box();
+            bool red_collision = detect_collision(bbox, red_basket.bounding_box());
+            bool green_collision = detect_collision(bbox, green_basket.bounding_box());
+            if ((red_collision && bricks[i].color == BRICK_RED) ||
+                (green_collision && bricks[i].color == BRICK_GREEN)) {
+                score += 2;
+            } else if (red_collision || green_collision) {
+                if (bricks[i].color == BRICK_BLACK) quit(window);
+                score -= 1;
+            }
+
+            if (red_collision || green_collision || bricks[i].position.y < -4.5) {
+                bricks[i] = Brick();
+                bricks_present[i] = false;
+            }
+        }
 }
 
 /* Initialize the OpenGL rendering properties */
@@ -144,12 +163,13 @@ int main (int argc, char** argv)
     srand(time(0));
 	int width = 600;
 	int height = 600;
+    score = 0;
 
-    GLFWwindow* window = initGLFW(width, height);
+    window = initGLFW(width, height);
 
 	initGL (window, width, height);
 
-    Timer t1s(1), t24(1/24), brickTimer(0.1);
+    Timer t1s(1), t24(1/24), brickTimer(2);
 
     /* Draw in loop */
     while (!glfwWindowShouldClose(window)) {

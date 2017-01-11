@@ -66,4 +66,6 @@ struct bounding_box_t {
 
 bool detect_collision(bounding_box_t a, bounding_box_t b);
 
+extern int score;
+
 #endif

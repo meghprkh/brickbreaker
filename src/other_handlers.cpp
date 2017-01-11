@@ -22,6 +22,7 @@ void error_callback(int error, const char* description)
 
 void quit(GLFWwindow *window)
 {
+    printf("Score: %d\n", score);
     glfwDestroyWindow(window);
     glfwTerminate();
     exit(EXIT_SUCCESS);
