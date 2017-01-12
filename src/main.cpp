@@ -16,6 +16,7 @@
 #include "mirror.h"
 #include "basket.h"
 #include "timer.h"
+#include "cannon.h"
 
 #define MAX_BRICKS 100
 
@@ -33,6 +34,7 @@ Mirror m1, m2;
 Brick bricks[MAX_BRICKS];
 bool bricks_present[MAX_BRICKS];
 Basket red_basket, green_basket;
+Cannon cannon;
 
 int score;
 
@@ -78,6 +80,7 @@ void draw ()
 
   red_basket.draw(VP);
   green_basket.draw(VP);
+  cannon.draw(VP);
 }
 
 void tick_input(GLFWwindow* window) {
@@ -92,6 +95,12 @@ void tick_input(GLFWwindow* window) {
         if (left) green_basket.move(DIR_LEFT);
         else if (right) green_basket.move(DIR_RIGHT);
     }
+
+    if (glfwGetKey(window, GLFW_KEY_A)) cannon.rotate(DIR_UP);
+    if (glfwGetKey(window, GLFW_KEY_D)) cannon.rotate(DIR_DOWN);
+
+    if (glfwGetKey(window, GLFW_KEY_S)) cannon.move(DIR_UP);
+    if (glfwGetKey(window, GLFW_KEY_F)) cannon.move(DIR_DOWN);
 }
 
 void tick_elements() {
@@ -135,6 +144,8 @@ void initGL (GLFWwindow* window, int width, int height)
     red_basket.set_position(3, -3.5);
     green_basket = Basket(BRICK_GREEN);
     green_basket.set_position(-3, -3.5);
+
+    cannon = Cannon(0);
 
 	// Create and compile our GLSL program from the shaders
 	programID = LoadShaders( "Sample_GL.vert", "Sample_GL.frag" );
