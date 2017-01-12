@@ -65,6 +65,7 @@ struct bounding_box_t {
 };
 
 bool detect_collision(bounding_box_t a, bounding_box_t b);
+void shoot_laser();
 
 extern int score;
 

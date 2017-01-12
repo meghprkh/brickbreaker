@@ -17,6 +17,7 @@
 #include "basket.h"
 #include "timer.h"
 #include "cannon.h"
+#include "laser.h"
 
 #define MAX_BRICKS 100
 
@@ -35,6 +36,9 @@ Brick bricks[MAX_BRICKS];
 bool bricks_present[MAX_BRICKS];
 Basket red_basket, green_basket;
 Cannon cannon;
+Laser laser;
+bool laser_present = false;
+int laser_cooldown = 0;
 
 int score;
 
@@ -74,6 +78,7 @@ void draw ()
   m1.draw(VP);
   m2.draw(VP);
 
+  if (laser_present) laser.draw(VP);
   for (int i = 0; i < MAX_BRICKS; i++)
       if (bricks_present[i])
           bricks[i].draw(VP);
@@ -101,6 +106,8 @@ void tick_input(GLFWwindow* window) {
 
     if (glfwGetKey(window, GLFW_KEY_S)) cannon.move(DIR_UP);
     if (glfwGetKey(window, GLFW_KEY_F)) cannon.move(DIR_DOWN);
+
+    if (glfwGetKey(window, GLFW_KEY_SPACE)) shoot_laser();
 }
 
 void tick_elements() {
@@ -180,7 +187,7 @@ int main (int argc, char** argv)
 
 	initGL (window, width, height);
 
-    Timer t1s(1), t24(1/24), brickTimer(2);
+    Timer tquarter(0.25), t1s(1), t24(1/24), brickTimer(2);
 
     /* Draw in loop */
     while (!glfwWindowShouldClose(window)) {
@@ -198,8 +205,13 @@ int main (int argc, char** argv)
             tick_input(window);
         }
 
+        if (tquarter.processTick()) {
+            laser_present = false;
+        }
+
         if (t1s.processTick()) {
             // happens every 1 second
+            if (laser_cooldown > 0) laser_cooldown--;
         }
 
         if (brickTimer.processTick()) {
@@ -223,4 +235,32 @@ int main (int argc, char** argv)
 bool detect_collision(bounding_box_t a, bounding_box_t b) {
     return (abs(a.x - b.x) * 2 < (a.width + b.width)) &&
            (abs(a.y - b.y) * 2 < (a.height + b.height));
+}
+
+void shoot_laser()
+{
+    if (laser_present || laser_cooldown > 0) return;
+    laser_present = true;
+    laser_cooldown = 1;
+    laser = Laser(-4+0.8*cos(M_PI*cannon.rotation/180), cannon.y + 0.8*sin(M_PI*cannon.rotation/180), cannon.rotation);
+    double minx = 5;
+    int mini = -1;
+    for (int i = 0; i < MAX_BRICKS; i++) {
+        if (bricks_present[i] && laser.collides(bricks[i].bounding_box())) {
+            if (minx > bricks[i].position.x) {
+                minx = bricks[i].position.x;
+                mini = i;
+            }
+        }
+    }
+    if (mini == -1) {
+        laser.createObject();
+//        score -= 1;
+    } else {
+        if (bricks[mini].color == BRICK_BLACK) score += 2;
+        else score -= 1;
+        laser.createObject(bricks[mini].bounding_box());
+        bricks[mini] = Brick();
+        bricks_present[mini] = false;
+    }
 }
