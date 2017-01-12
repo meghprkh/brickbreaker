@@ -9,12 +9,13 @@ public:
     Laser() {}
     Laser(double x, double y, double rotation);
     bool collides(bounding_box_t bbox);
-    void createObject();
+    void createObject(float dist = 15);
     void createObject(bounding_box_t bbox);
     void draw(glm::mat4 VP);
     double x, y, rotation;
 private:
     VAO* object;
+    double pointSign(double x, double y);
 };
 
 #endif // LASER_H

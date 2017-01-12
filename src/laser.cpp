@@ -6,24 +6,30 @@ Laser::Laser(double x, double y, double rotation)
     this->x = x;
     this->y = y;
     this->rotation = rotation;
-
 }
 
+
+double Laser::pointSign(double x, double y) {
+    return (y - this->y) - tan(M_PI * this->rotation / 180)*(x - this->x);
+}
+
+
 bool Laser::collides(bounding_box_t bbox) {
-    double angle = atan((bbox.y - y) / (bbox.x - x)) * 180 / M_PI ;
-    return abs(angle - rotation) < 5;
+    return (
+        (pointSign(bbox.x - bbox.width/2, bbox.y - bbox.height/2)*pointSign(bbox.x + bbox.width/2, bbox.y + bbox.height/2) <= 0) ||
+        (pointSign(bbox.x - bbox.width/2, bbox.y + bbox.height/2)*pointSign(bbox.x + bbox.width/2, bbox.y - bbox.height/2) <= 0)
+    );
 }
 
 void Laser::createObject(bounding_box_t bbox) {
-    const GLfloat vertex_buffer_data [] = {
-        x, y, 0, bbox.x, bbox.y, 0
-    };
-    this->object = create3DObject(GL_LINES, 2, vertex_buffer_data, 0.7, 0.25, 0.25, GL_LINE);
+    float dist = sqrt((y-bbox.y)*(y-bbox.y) + (x-bbox.x)*(x-bbox.x));
+    createObject(dist);
 }
 
-void Laser::createObject() {
+void Laser::createObject(float dist) {
     const GLfloat vertex_buffer_data [] = {
-        x, y, 0, 15*cos(M_PI*rotation/180), 15*sin(M_PI*rotation/180), 0
+        (float) x, (float) y, 0,
+        (float) (x + dist*cos(M_PI*rotation/180)), (float) (y + dist*sin(M_PI*rotation/180)), 0
     };
     this->object = create3DObject(GL_LINES, 2, vertex_buffer_data, 0.7, 0.25, 0.25, GL_LINE);
 }
