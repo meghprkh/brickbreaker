@@ -63,11 +63,11 @@ void Cannon::draw(glm::mat4 VP) {
 }
 
 void Cannon::rotate(direction_t dir) {
-    if (dir == DIR_UP) this->rotation += ROTATION_SPEED;
-    else if (dir == DIR_DOWN) this->rotation -= ROTATION_SPEED;
+    if (dir == DIR_UP && this->rotation < 90) this->rotation += ROTATION_SPEED;
+    else if (dir == DIR_DOWN && this->rotation > -90) this->rotation -= ROTATION_SPEED;
 }
 
 void Cannon::move(direction_t dir) {
-    if (dir == DIR_UP) this->y += TRANSLATION_SPEED;
-    else if (dir == DIR_DOWN) this->y -= TRANSLATION_SPEED;
+    if (dir == DIR_UP && this->y < 4) this->y += TRANSLATION_SPEED;
+    else if (dir == DIR_DOWN && this->y > -4) this->y -= TRANSLATION_SPEED;
 }
