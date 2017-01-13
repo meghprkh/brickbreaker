@@ -9,26 +9,46 @@ Cannon::Cannon(float rotation)
     this->rotation = rotation;
     this->y = 0;
     static const GLfloat vertex_buffer_data [] = {
-         -1,  0.2, 0,
-        0.6,  0.2, 0,
-        0.6, -0.2, 0,
-        0.6, -0.2, 0,
-         -1, -0.2, 0,
-         -1,  0.2, 0,
+         -1,  0.3, 0,
+        0.2,  0.3, 0,
+        0.2, -0.3, 0,
+        0.2, -0.3, 0,
+         -1, -0.3, 0,
+         -1,  0.3, 0,
 
-        0.6,  0.1, 0,
-        0.7,  0.1, 0,
-        0.7, -0.1, 0,
-        0.7, -0.1, 0,
-        0.6, -0.1, 0,
-        0.6,  0.1, 0,
+          -1,  0.125, 0,
+        0.75,  0.125, 0,
+        0.75, -0.125, 0,
+        0.75, -0.125, 0,
+          -1, -0.125, 0,
+          -1,  0.125, 0,
 
-        0.7,  0.1, 0,
-        0.8,    0, 0,
-        0.7, -0.1, 0,
+        0.75,  0.125, 0,
+        0.8,       0, 0,
+        0.75, -0.125, 0,
     };
 
-    this->object = create3DObject(GL_TRIANGLES, 15, vertex_buffer_data, 0.2, 0.1, 0.5, GL_FILL);
+    static const GLfloat color_buffer_data [] = {
+        COLOR_CANNON1.r / 255.0f, COLOR_CANNON1.g / 255.0f, COLOR_CANNON1.b / 255.0f,
+        COLOR_CANNON1.r / 255.0f, COLOR_CANNON1.g / 255.0f, COLOR_CANNON1.b / 255.0f,
+        COLOR_CANNON1.r / 255.0f, COLOR_CANNON1.g / 255.0f, COLOR_CANNON1.b / 255.0f,
+        COLOR_CANNON1.r / 255.0f, COLOR_CANNON1.g / 255.0f, COLOR_CANNON1.b / 255.0f,
+        COLOR_CANNON1.r / 255.0f, COLOR_CANNON1.g / 255.0f, COLOR_CANNON1.b / 255.0f,
+        COLOR_CANNON1.r / 255.0f, COLOR_CANNON1.g / 255.0f, COLOR_CANNON1.b / 255.0f,
+
+        COLOR_CANNON2.r / 255.0f, COLOR_CANNON2.g / 255.0f, COLOR_CANNON2.b / 255.0f,
+        COLOR_CANNON2.r / 255.0f, COLOR_CANNON2.g / 255.0f, COLOR_CANNON2.b / 255.0f,
+        COLOR_CANNON2.r / 255.0f, COLOR_CANNON2.g / 255.0f, COLOR_CANNON2.b / 255.0f,
+        COLOR_CANNON2.r / 255.0f, COLOR_CANNON2.g / 255.0f, COLOR_CANNON2.b / 255.0f,
+        COLOR_CANNON2.r / 255.0f, COLOR_CANNON2.g / 255.0f, COLOR_CANNON2.b / 255.0f,
+        COLOR_CANNON2.r / 255.0f, COLOR_CANNON2.g / 255.0f, COLOR_CANNON2.b / 255.0f,
+
+        COLOR_CANNON2.r / 255.0f, COLOR_CANNON2.g / 255.0f, COLOR_CANNON2.b / 255.0f,
+        COLOR_CANNON2.r / 255.0f, COLOR_CANNON2.g / 255.0f, COLOR_CANNON2.b / 255.0f,
+        COLOR_CANNON2.r / 255.0f, COLOR_CANNON2.g / 255.0f, COLOR_CANNON2.b / 255.0f,
+    };
+
+    this->object = create3DObject(GL_TRIANGLES, 15, vertex_buffer_data, color_buffer_data, GL_FILL);
 }
 
 

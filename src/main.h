@@ -14,11 +14,18 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+struct color_t {
+    int r;
+    int g;
+    int b;
+};
+
 // nonedit.cpp
 GLFWwindow* initGLFW (int width, int height);
 GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path);
 struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloat* vertex_buffer_data, const GLfloat* color_buffer_data, GLenum fill_mode=GL_FILL);
 struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloat* vertex_buffer_data, const GLfloat red, const GLfloat green, const GLfloat blue, GLenum fill_mode=GL_FILL);
+struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloat* vertex_buffer_data, const color_t color, GLenum fill_mode=GL_FILL);
 void draw3DObject (struct VAO* vao);
 
 // input.cpp
@@ -68,5 +75,14 @@ bool detect_collision(bounding_box_t a, bounding_box_t b);
 void shoot_laser();
 
 extern int score;
+
+// ---- Colors ----
+extern const color_t COLOR_RED;
+extern const color_t COLOR_GREEN;
+extern const color_t COLOR_BLACK;
+extern const color_t COLOR_BACKGROUND;
+extern const color_t COLOR_LASER;
+extern const color_t COLOR_CANNON1;
+extern const color_t COLOR_CANNON2;
 
 #endif

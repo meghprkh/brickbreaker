@@ -201,6 +201,10 @@ struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloa
     return create3DObject(primitive_mode, numVertices, vertex_buffer_data, color_buffer_data, fill_mode);
 }
 
+struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloat* vertex_buffer_data, const color_t color, GLenum fill_mode) {
+    return create3DObject(primitive_mode, numVertices, vertex_buffer_data, color.r / 256.0, color.g / 256.0, color.b / 256.0, fill_mode);
+}
+
 /* Render the VBOs handled by VAO */
 void draw3DObject (struct VAO* vao)
 {

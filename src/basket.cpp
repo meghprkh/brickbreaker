@@ -15,8 +15,12 @@ Basket::Basket(brick_color_t color)
       -0.5,-0.3,0  // vertex 1
     };
 
+    color_t color_s;
+    if (color == BRICK_RED) color_s = COLOR_RED;
+    else if (color == BRICK_GREEN) color_s = COLOR_GREEN;
+
     // create3DObject creates and returns a handle to a VAO that can be used later
-    this->object = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data, color == BRICK_RED ? 1 : 0, color == BRICK_GREEN ? 1 : 0, 0, GL_FILL);
+    this->object = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data, color_s, GL_FILL);
 }
 
 void Basket::draw(glm::mat4 VP) {

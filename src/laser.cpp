@@ -31,7 +31,7 @@ void Laser::createObject(float dist) {
         (float) x, (float) y, 0,
         (float) (x + dist*cos(M_PI*rotation/180)), (float) (y + dist*sin(M_PI*rotation/180)), 0
     };
-    this->object = create3DObject(GL_LINES, 2, vertex_buffer_data, 0.7, 0.25, 0.25, GL_LINE);
+    this->object = create3DObject(GL_LINES, 2, vertex_buffer_data, COLOR_LASER, GL_LINE);
 }
 
 void Laser::draw(glm::mat4 VP) {
