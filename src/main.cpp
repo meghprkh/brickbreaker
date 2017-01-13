@@ -187,20 +187,18 @@ int main (int argc, char** argv)
 
 	initGL (window, width, height);
 
-    Timer tquarter(0.25), t1s(1), t24(1/24), brickTimer(2);
+    Timer tquarter(0.25), t1s(1), t60(1.0/60), brickTimer(2);
 
     /* Draw in loop */
     while (!glfwWindowShouldClose(window)) {
-
-        // OpenGL Draw commands
-        draw();
-
-        // Swap Frame Buffer in double buffering
-        glfwSwapBuffers(window);
-
         // Process timers
 
-        if (t24.processTick()) {
+        if (t60.processTick()) {
+            // OpenGL Draw commands
+            draw();
+            // Swap Frame Buffer in double buffering
+            glfwSwapBuffers(window);
+
             tick_elements();
             tick_input(window);
         }
