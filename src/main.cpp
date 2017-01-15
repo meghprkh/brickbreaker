@@ -41,6 +41,7 @@ bool laser_present = false;
 int laser_cooldown = 0;
 
 int score;
+float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
 
 /* Render the scene with openGL */
 /* Edit this function according to your assignment */
@@ -99,6 +100,11 @@ void tick_input(GLFWwindow* window) {
     } else if (alt) {
         if (left) green_basket.move(DIR_LEFT);
         else if (right) green_basket.move(DIR_RIGHT);
+    } else {
+        if (left) { screen_center_x -= 0.05; reset_screen(); }
+        if (right) { screen_center_x += 0.05; reset_screen(); }
+        if (glfwGetKey(window, GLFW_KEY_UP)) { screen_center_y += 0.05; reset_screen(); }
+        if (glfwGetKey(window, GLFW_KEY_DOWN)) { screen_center_y -= 0.05; reset_screen(); }
     }
 
     if (glfwGetKey(window, GLFW_KEY_A)) cannon.rotate(DIR_UP);
@@ -261,4 +267,13 @@ void shoot_laser()
         bricks[mini] = Brick();
         bricks_present[mini] = false;
     }
+}
+
+void reset_screen()
+{
+    float top = (screen_center_y+4) / screen_zoom;
+    float bottom = (screen_center_y-4) / screen_zoom;
+    float left = (screen_center_x-4) / screen_zoom;
+    float right = (screen_center_x+4) / screen_zoom;
+    Matrices.projection = glm::ortho(left, right, bottom, top, 0.1f, 500.0f);
 }
