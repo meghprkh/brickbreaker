@@ -13,6 +13,8 @@
 
 #include "main.h"
 
+bool cannon_keyboard_input = true;
+
 using namespace std;
 
 /* Executed when a regular key is pressed/released/held-down */
@@ -23,26 +25,28 @@ void keyboard (GLFWwindow* window, int key, int scancode, int action, int mods)
 
     if (action == GLFW_RELEASE) {
 //        switch (key) {
-//            case GLFW_KEY_C:
-//                rectangle_rot_status = !rectangle_rot_status;
-//                break;
-//            case GLFW_KEY_P:
-//                triangle_rot_status = !triangle_rot_status;
-//                break;
-//            case GLFW_KEY_X:
-//                // do something ..
-//                break;
-//            default:
-//                break;
+//        case GLFW_KEY_C:
+//            rectangle_rot_status = !rectangle_rot_status;
+//            break;
+//        case GLFW_KEY_P:
+//            triangle_rot_status = !triangle_rot_status;
+//            break;
+//        case GLFW_KEY_X:
+//            // do something ..
+//            break;
+//        default:
+//            break;
 //        }
     }
     else if (action == GLFW_PRESS) {
         switch (key) {
-            case GLFW_KEY_ESCAPE:
-                quit(window);
-                break;
-            default:
-                break;
+        case GLFW_KEY_ESCAPE:
+            quit(window);
+            break;
+        case GLFW_KEY_E:
+            cannon_keyboard_input = !cannon_keyboard_input;
+        default:
+            break;
         }
     }
 }
@@ -50,14 +54,14 @@ void keyboard (GLFWwindow* window, int key, int scancode, int action, int mods)
 /* Executed for character input (like in text boxes) */
 void keyboardChar (GLFWwindow* window, unsigned int key)
 {
-        switch (key) {
-                case 'Q':
-                case 'q':
-            quit(window);
-            break;
-                default:
-                        break;
-        }
+    switch (key) {
+    case 'Q':
+    case 'q':
+        quit(window);
+        break;
+    default:
+        break;
+    }
 }
 
 /* Executed when a mouse button is pressed/released */

@@ -38,6 +38,7 @@ Brick bricks[MAX_BRICKS];
 bool bricks_present[MAX_BRICKS];
 Basket red_basket, green_basket;
 Cannon cannon;
+extern bool cannon_keyboard_input;
 Laser laser;
 bool laser_present = false;
 int laser_cooldown = 0;
@@ -110,8 +111,25 @@ void tick_input(GLFWwindow* window) {
         if (glfwGetKey(window, GLFW_KEY_DOWN)) { screen_center_y -= 0.05; reset_screen(); }
     }
 
-    if (glfwGetKey(window, GLFW_KEY_A)) cannon.rotate(DIR_UP);
-    if (glfwGetKey(window, GLFW_KEY_D)) cannon.rotate(DIR_DOWN);
+    if (cannon_keyboard_input) {
+        if (glfwGetKey(window, GLFW_KEY_A)) cannon.rotate(DIR_UP);
+        if (glfwGetKey(window, GLFW_KEY_D)) cannon.rotate(DIR_DOWN);
+    } else {
+        double xpos, ypos;
+        glfwGetCursorPos(window, &xpos, &ypos);
+        int width, height;
+        glfwGetWindowSize(window, &width, &height);
+        if (0 < xpos && xpos < width && 0 < ypos && ypos < height) {
+            double xdiff = xpos*8/width - 4.2;
+            double ydiff = (height-ypos)*8/height - 4 - cannon.y;
+            int rot = atan(ydiff/xdiff)*180/M_PI;
+            if (xdiff == 0) rot = ydiff < 0 ? -85 : 85;
+            else if (rot > 85) rot = 85;
+            else if (rot < -85) rot = -85;
+            printf("%d %f %f\n", rot, xdiff, ydiff);
+            cannon.rotation = rot;
+        }
+    }
 
     if (glfwGetKey(window, GLFW_KEY_S)) cannon.move(DIR_UP);
     if (glfwGetKey(window, GLFW_KEY_F)) cannon.move(DIR_DOWN);
