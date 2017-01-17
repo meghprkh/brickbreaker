@@ -18,6 +18,8 @@
 #include "timer.h"
 #include "cannon.h"
 #include "laser.h"
+#include "digit.h"
+#include "score.h"
 
 #define MAX_BRICKS 100
 
@@ -39,8 +41,8 @@ Cannon cannon;
 Laser laser;
 bool laser_present = false;
 int laser_cooldown = 0;
+Score score;
 
-int score;
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
 
 /* Render the scene with openGL */
@@ -87,6 +89,7 @@ void draw ()
   red_basket.draw(VP);
   green_basket.draw(VP);
   cannon.draw(VP);
+  score.draw(VP);
 }
 
 void tick_input(GLFWwindow* window) {
@@ -126,10 +129,10 @@ void tick_elements() {
             bool green_collision = detect_collision(bbox, green_basket.bounding_box());
             if ((red_collision && bricks[i].color == BRICK_RED) ||
                 (green_collision && bricks[i].color == BRICK_GREEN)) {
-                score += 2;
+                score.add();
             } else if (red_collision || green_collision) {
                 if (bricks[i].color == BRICK_BLACK) quit(window);
-                score -= 1;
+                score.subtract();
             }
 
             if (red_collision || green_collision || bricks[i].position.y < -4.5) {
@@ -187,13 +190,14 @@ int main (int argc, char** argv)
     srand(time(0));
 	int width = 600;
 	int height = 600;
-    score = 0;
 
     window = initGLFW(width, height);
 
 	initGL (window, width, height);
 
     Timer tquarter(0.25), t1s(1), t60(1.0/60), brickTimer(2);
+
+    score.update(0);
 
     /* Draw in loop */
     while (!glfwWindowShouldClose(window)) {
@@ -261,8 +265,8 @@ void shoot_laser()
         laser.createObject();
 //        score -= 1;
     } else {
-        if (bricks[mini].color == BRICK_BLACK) score += 2;
-        else score -= 1;
+        if (bricks[mini].color == BRICK_BLACK) score.add();
+        else score.subtract();
         laser.createObject(bricks[mini].bounding_box());
         bricks[mini] = Brick();
         bricks_present[mini] = false;
