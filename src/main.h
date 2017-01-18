@@ -73,7 +73,7 @@ struct bounding_box_t {
 };
 
 bool detect_collision(bounding_box_t a, bounding_box_t b);
-void shoot_laser();
+void shoot_laser(double x, double y, double rotation, int from_mirror = -1);
 
 extern float screen_zoom, screen_center_x, screen_center_y;
 void reset_screen();

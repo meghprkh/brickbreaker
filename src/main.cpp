@@ -21,6 +21,7 @@
 #include "digit.h"
 #include "score.h"
 
+#define NUM_MIRRORS 4
 #define MAX_BRICKS 100
 
 using namespace std;
@@ -33,14 +34,14 @@ GLFWwindow* window;
  * Customizable functions *
  **************************/
 
-Mirror m1, m2;
+Mirror mirrors[NUM_MIRRORS];
 Brick bricks[MAX_BRICKS];
 bool bricks_present[MAX_BRICKS];
 Basket red_basket, green_basket;
 Cannon cannon;
 extern bool cannon_keyboard_input;
-Laser laser;
-bool laser_present = false;
+Laser lasers[MAX_BRICKS];
+bool lasers_present[MAX_BRICKS];
 int laser_cooldown = 0;
 Score score;
 
@@ -79,10 +80,11 @@ void draw ()
   glm::mat4 MVP;	// MVP = Projection * View * Model
 
   // Scene render
-  m1.draw(VP);
-  m2.draw(VP);
+  for (int i = 0; i < NUM_MIRRORS; i++) mirrors[i].draw(VP);
 
-  if (laser_present) laser.draw(VP);
+  for (int i = 0; i < MAX_BRICKS; i++)
+      if (lasers_present[i])
+          lasers[i].draw(VP);
   for (int i = 0; i < MAX_BRICKS; i++)
       if (bricks_present[i])
           bricks[i].draw(VP);
@@ -120,7 +122,7 @@ void tick_input(GLFWwindow* window) {
         int width, height;
         glfwGetWindowSize(window, &width, &height);
         if (0 < xpos && xpos < width && 0 < ypos && ypos < height) {
-            double xdiff = xpos*8/width - 4.2;
+            double xdiff = xpos*8/width - 4;
             double ydiff = (height-ypos)*8/height - 4 - cannon.y;
             int rot = atan(ydiff/xdiff)*180/M_PI;
             if (xdiff == 0) rot = ydiff < 0 ? -85 : 85;
@@ -134,7 +136,7 @@ void tick_input(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_S)) cannon.move(DIR_UP);
     if (glfwGetKey(window, GLFW_KEY_F)) cannon.move(DIR_DOWN);
 
-    if (glfwGetKey(window, GLFW_KEY_SPACE)) shoot_laser();
+    if (glfwGetKey(window, GLFW_KEY_SPACE)) shoot_laser(-4, cannon.y, cannon.rotation);
 }
 
 void tick_elements() {
@@ -167,11 +169,14 @@ void initGL (GLFWwindow* window, int width, int height)
     /* Objects should be created before any other gl function and shaders */
 	// Create the models
 
-    m1 = Mirror(0, 0, 0);
-    m2 = Mirror(0, 0, -45);
+    mirrors[0] = Mirror(0, 3, 60);
+    mirrors[1] = Mirror(0, -3, -60);
+    mirrors[2] = Mirror(2, 1, 30);
+    mirrors[3] = Mirror(2, -1, -30);
 
     for (int i = 0; i < MAX_BRICKS; i++) {
         bricks_present[i] = false;
+        lasers_present[i] = false;
     }
 
     red_basket = Basket(BRICK_RED);
@@ -213,7 +218,7 @@ int main (int argc, char** argv)
 
 	initGL (window, width, height);
 
-    Timer tquarter(0.25), t1s(1), t60(1.0/60), brickTimer(2);
+    Timer t60(1.0/60), brickTimer(2);
 
     score.update(0);
 
@@ -229,15 +234,13 @@ int main (int argc, char** argv)
 
             tick_elements();
             tick_input(window);
-        }
 
-        if (tquarter.processTick()) {
-            laser_present = false;
-        }
-
-        if (t1s.processTick()) {
-            // happens every 1 second
-            if (laser_cooldown > 0) laser_cooldown--;
+            if (laser_cooldown > 0) {
+                laser_cooldown--;
+                if (laser_cooldown == 55)
+                    for (int i = 0; i < MAX_BRICKS; i++)
+                        lasers_present[i] = false;
+            }
         }
 
         if (brickTimer.processTick()) {
@@ -263,29 +266,65 @@ bool detect_collision(bounding_box_t a, bounding_box_t b) {
            (abs(a.y - b.y) * 2 < (a.height + b.height));
 }
 
-void shoot_laser()
+void shoot_laser(double x, double y, double rotation, int from_mirror)
 {
-    if (laser_present || laser_cooldown > 0) return;
-    laser_present = true;
-    laser_cooldown = 1;
-    laser = Laser(-4+0.8*cos(M_PI*cannon.rotation/180), cannon.y + 0.8*sin(M_PI*cannon.rotation/180), cannon.rotation);
-    double minx = 5;
+    if (laser_cooldown > 0) return;
+    int laseri = 0;
+    for (; laseri < MAX_BRICKS; laseri++)
+        if (!lasers_present[laseri]) break;
+    lasers[laseri] = Laser(x, y, rotation);
+    lasers_present[laseri] = true;
+    double minx = 10;
     int mini = -1;
+    bool ismirror = false;
     for (int i = 0; i < MAX_BRICKS; i++) {
-        if (bricks_present[i] && laser.collides(bricks[i].bounding_box())) {
-            if (minx > bricks[i].position.x) {
-                minx = bricks[i].position.x;
+        if (bricks_present[i] && lasers[laseri].collides(bricks[i].bounding_box())) {
+            double dist = abs(x - bricks[i].position.x);
+            if (minx > dist) {
+                minx = dist;
                 mini = i;
             }
         }
     }
-    if (mini == -1) {
-        laser.createObject();
+    for (int i = 0; i < NUM_MIRRORS; i++) {
+        if (from_mirror == i) continue;
+        if (90 + mirrors[i].rotation == rotation) continue;
+        float m1 = tan((90 + mirrors[i].rotation) * M_PI / 180);
+        float m2 = tan(rotation * M_PI / 180);
+        float c1 = mirrors[i].position.y - mirrors[i].position.x * m1;
+        float c2 = y - x * m2;
+        float xint = (c2 - c1) / (m1 - m2);
+        float yint = m1 * xint + c1;
+        float ldist = sqrt((xint-mirrors[i].position.x)*(xint-mirrors[i].position.x) + (yint - mirrors[i].position.y)*(yint - mirrors[i].position.y));
+        if (ldist <= 0.6) {
+            double dist = abs(xint - x);
+            if (minx > dist) {
+                minx = dist;
+                mini = i;
+                ismirror = true;
+            }
+        }
+    }
+    if (ismirror) {
+        int i = mini;
+        float m1 = tan((90 + mirrors[i].rotation) * M_PI / 180);
+        float m2 = tan(rotation * M_PI / 180);
+        float c1 = mirrors[i].position.y - mirrors[i].position.x * m1;
+        float c2 = y - x * m2;
+        float xint = (c2 - c1) / (m1 - m2);
+        float yint = m1 * xint + c1;
+        float roti = 2*(90 + mirrors[i].rotation) - rotation;
+        lasers[laseri].createObject(xint, yint);
+        shoot_laser(xint, yint, roti, i);
+    } else if (mini == -1) {
+        laser_cooldown = 60;
+        lasers[laseri].createObject();
 //        score -= 1;
     } else {
+        laser_cooldown = 60;
         if (bricks[mini].color == BRICK_BLACK) score.add();
         else score.subtract();
-        laser.createObject(bricks[mini].bounding_box());
+        lasers[laseri].createObject(bricks[mini].bounding_box());
         bricks[mini] = Brick();
         bricks_present[mini] = false;
     }

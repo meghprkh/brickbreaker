@@ -26,6 +26,11 @@ void Laser::createObject(bounding_box_t bbox) {
     createObject(dist);
 }
 
+void Laser::createObject(double x, double y) {
+    float dist = sqrt((y-this->y)*(y-this->y) + (x-this->x)*(x-this->x));
+    createObject(dist);
+}
+
 void Laser::createObject(float dist) {
     const GLfloat vertex_buffer_data [] = {
         (float) x, (float) y, 0,
