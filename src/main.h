@@ -87,4 +87,9 @@ extern const color_t COLOR_LASER;
 extern const color_t COLOR_CANNON1;
 extern const color_t COLOR_CANNON2;
 
+// Audio
+void audio_init();
+void audio_play();
+void audio_close();
+
 #endif

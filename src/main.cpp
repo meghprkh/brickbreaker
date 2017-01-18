@@ -218,8 +218,11 @@ int main (int argc, char** argv)
 
     score.update(0);
 
+    audio_init();
+
     /* Draw in loop */
     while (!glfwWindowShouldClose(window)) {
+        audio_play();
         // Process timers
 
         if (t60.processTick()) {

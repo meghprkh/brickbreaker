@@ -22,6 +22,7 @@ void error_callback(int error, const char* description)
 
 void quit(GLFWwindow *window)
 {
+    audio_close();
     glfwDestroyWindow(window);
     glfwTerminate();
     exit(EXIT_SUCCESS);
