@@ -122,13 +122,9 @@ void tick_input(GLFWwindow* window) {
         int width, height;
         glfwGetWindowSize(window, &width, &height);
         if (0 < xpos && xpos < width && 0 < ypos && ypos < height) {
-            double xdiff = xpos*8/width - 4;
+            double xdiff = xpos*8/width;
             double ydiff = (height-ypos)*8/height - 4 - cannon.y;
             int rot = atan(ydiff/xdiff)*180/M_PI;
-            if (xdiff == 0) rot = ydiff < 0 ? -85 : 85;
-            else if (rot > 85) rot = 85;
-            else if (rot < -85) rot = -85;
-            printf("%d %f %f\n", rot, xdiff, ydiff);
             cannon.rotation = rot;
         }
     }
