@@ -243,7 +243,7 @@ int main (int argc, char** argv)
             for (int i = 0; i < MAX_BRICKS; i++) {
                 if (!bricks_present[i]) {
                     bricks[i] = Brick(static_cast<brick_color_t>(rand() % 3));
-                    bricks[i].set_position(((double) rand()/RAND_MAX - 0.5)*8, 4.5);
+                    bricks[i].set_position(((double) rand()/RAND_MAX - 0.5)*7+0.5, 4.5);
                     bricks_present[i] = true;
                     break;
                 }
