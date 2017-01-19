@@ -107,10 +107,10 @@ void tick_input(GLFWwindow* window) {
         if (left) green_basket.move(DIR_LEFT);
         else if (right) green_basket.move(DIR_RIGHT);
     } else {
-        if (left) { screen_center_x -= 0.05; reset_screen(); }
-        if (right) { screen_center_x += 0.05; reset_screen(); }
-        if (glfwGetKey(window, GLFW_KEY_UP)) { screen_center_y += 0.05; reset_screen(); }
-        if (glfwGetKey(window, GLFW_KEY_DOWN)) { screen_center_y -= 0.05; reset_screen(); }
+        if (left && screen_center_x - 4/screen_zoom > -4) { screen_center_x -= 0.05; reset_screen(); }
+        if (right && screen_center_x + 4/screen_zoom < 4) { screen_center_x += 0.05; reset_screen(); }
+        if (glfwGetKey(window, GLFW_KEY_UP) && screen_center_y + 4/screen_zoom < 4) { screen_center_y += 0.05; reset_screen(); }
+        if (glfwGetKey(window, GLFW_KEY_DOWN) && screen_center_y - 4/screen_zoom > -4) { screen_center_y -= 0.05; reset_screen(); }
     }
 
     if (cannon_keyboard_input) {
@@ -331,9 +331,9 @@ void shoot_laser(double x, double y, double rotation, int from_mirror)
 
 void reset_screen()
 {
-    float top = (screen_center_y+4) / screen_zoom;
-    float bottom = (screen_center_y-4) / screen_zoom;
-    float left = (screen_center_x-4) / screen_zoom;
-    float right = (screen_center_x+4) / screen_zoom;
+    float top = screen_center_y + 4 / screen_zoom;
+    float bottom = screen_center_y - 4 / screen_zoom;
+    float left = screen_center_x - 4 / screen_zoom;
+    float right = screen_center_x + 4 / screen_zoom;
     Matrices.projection = glm::ortho(left, right, bottom, top, 0.1f, 500.0f);
 }
