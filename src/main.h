@@ -78,6 +78,9 @@ void shoot_laser(double x, double y, double rotation, int from_mirror = -1);
 extern float screen_zoom, screen_center_x, screen_center_y;
 void reset_screen();
 
+extern float game_rate;
+void reset_game_rate();
+
 // ---- Colors ----
 extern const color_t COLOR_RED;
 extern const color_t COLOR_GREEN;

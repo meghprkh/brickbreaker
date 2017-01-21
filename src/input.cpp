@@ -45,6 +45,15 @@ void keyboard (GLFWwindow* window, int key, int scancode, int action, int mods)
             break;
         case GLFW_KEY_E:
             cannon_keyboard_input = !cannon_keyboard_input;
+            break;
+        case GLFW_KEY_N:
+            game_rate -= 0.25*game_rate;
+            reset_game_rate();
+            break;
+        case GLFW_KEY_M:
+            game_rate += 0.25*game_rate;
+            reset_game_rate();
+            break;
         default:
             break;
         }

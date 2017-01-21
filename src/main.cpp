@@ -47,6 +47,9 @@ Score score;
 
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
 
+float game_rate = 1;
+Timer t60(1.0/60), brickTimer(2);
+
 /* Render the scene with openGL */
 /* Edit this function according to your assignment */
 void draw ()
@@ -214,8 +217,6 @@ int main (int argc, char** argv)
 
 	initGL (window, width, height);
 
-    Timer t60(1.0/60), brickTimer(2);
-
     score.update(0);
 
     audio_init();
@@ -336,4 +337,10 @@ void reset_screen()
     float left = screen_center_x - 4 / screen_zoom;
     float right = screen_center_x + 4 / screen_zoom;
     Matrices.projection = glm::ortho(left, right, bottom, top, 0.1f, 500.0f);
+}
+
+void reset_game_rate()
+{
+    t60 = Timer(1.0/60/game_rate);
+    brickTimer = Timer(2/game_rate);
 }
