@@ -20,6 +20,7 @@
 #include "laser.h"
 #include "digit.h"
 #include "score.h"
+#include "life.h"
 #include "background.h"
 
 #define NUM_MIRRORS 4
@@ -45,6 +46,7 @@ Laser lasers[MAX_BRICKS];
 bool lasers_present[MAX_BRICKS];
 int laser_cooldown = 0;
 Score score;
+Life life;
 Background background;
 
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
@@ -100,6 +102,7 @@ void draw ()
   green_basket.draw(VP);
   cannon.draw(VP);
   score.draw(VP);
+  life.draw(VP);
 }
 
 void tick_input(GLFWwindow* window) {
@@ -154,7 +157,7 @@ void tick_elements() {
                 (green_collision && bricks[i].color == BRICK_GREEN)) {
                 score.add();
             } else if (red_collision || green_collision) {
-                if (bricks[i].color == BRICK_BLACK) quit(window);
+                if (bricks[i].color == BRICK_BLACK) if (life.decrease()) quit(window);
                 score.subtract();
             }
 
@@ -176,6 +179,7 @@ void initGL (GLFWwindow* window, int width, int height)
 	// Create the models
 
     background = Background(0);
+    life.init();
 
     mirrors[0] = Mirror(0, 3, 60);
     mirrors[1] = Mirror(0, -3, -60);
