@@ -20,6 +20,7 @@
 #include "laser.h"
 #include "digit.h"
 #include "score.h"
+#include "background.h"
 
 #define NUM_MIRRORS 4
 #define MAX_BRICKS 100
@@ -44,6 +45,7 @@ Laser lasers[MAX_BRICKS];
 bool lasers_present[MAX_BRICKS];
 int laser_cooldown = 0;
 Score score;
+Background background;
 
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
 
@@ -83,6 +85,8 @@ void draw ()
   glm::mat4 MVP;	// MVP = Projection * View * Model
 
   // Scene render
+  background.draw(VP);
+
   for (int i = 0; i < NUM_MIRRORS; i++) mirrors[i].draw(VP);
 
   for (int i = 0; i < MAX_BRICKS; i++)
@@ -159,6 +163,8 @@ void tick_elements() {
                 bricks_present[i] = false;
             }
         }
+
+    background.tick();
 }
 
 /* Initialize the OpenGL rendering properties */
@@ -167,6 +173,8 @@ void initGL (GLFWwindow* window, int width, int height)
 {
     /* Objects should be created before any other gl function and shaders */
 	// Create the models
+
+    background = Background(0);
 
     mirrors[0] = Mirror(0, 3, 60);
     mirrors[1] = Mirror(0, -3, -60);
