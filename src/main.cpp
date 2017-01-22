@@ -41,7 +41,8 @@ Brick bricks[MAX_BRICKS];
 bool bricks_present[MAX_BRICKS];
 Basket red_basket, green_basket;
 Cannon cannon;
-extern bool cannon_keyboard_input;
+extern bool cannon_keyboard_input, drag_pan;
+extern double drag_oldx, drag_oldy;
 Laser lasers[MAX_BRICKS];
 bool lasers_present[MAX_BRICKS];
 int laser_cooldown = 0;
@@ -143,6 +144,27 @@ void tick_input(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_F)) cannon.move(DIR_DOWN);
 
     if (glfwGetKey(window, GLFW_KEY_SPACE)) shoot_laser(-4, cannon.y, cannon.rotation);
+
+    int drag_pan = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
+    if (drag_pan) {
+        if (drag_oldx == -1 || drag_oldy == -1) {
+            glfwGetCursorPos(window, &drag_oldx, &drag_oldy);
+        } else {
+            double newx, newy;
+            glfwGetCursorPos(window, &newx, &newy);
+            int width, height;
+            glfwGetWindowSize(window, &width, &height);
+            screen_center_x -= 8 * (newx - drag_oldx) / (width * screen_zoom);
+            screen_center_y += 8 * (newy - drag_oldy) / (height * screen_zoom);
+            if (screen_center_x - 4/screen_zoom < -4) screen_center_x = -4 + 4/screen_zoom;
+            if (screen_center_y - 4/screen_zoom < -4) screen_center_y = -4 + 4/screen_zoom;
+            if (screen_center_x + 4/screen_zoom > 4) screen_center_x = 4 - 4/screen_zoom;
+            if (screen_center_y + 4/screen_zoom > 4) screen_center_y = 4 - 4/screen_zoom;
+            drag_oldx = newx;
+            drag_oldy = newy;
+            reset_screen();
+        }
+    }
 }
 
 void tick_elements() {

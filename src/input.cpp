@@ -14,6 +14,8 @@
 #include "main.h"
 
 bool cannon_keyboard_input = true;
+bool drag_pan = false, old_cki;
+double drag_oldx = -1, drag_oldy = -1;
 
 using namespace std;
 
@@ -76,19 +78,26 @@ void keyboardChar (GLFWwindow* window, unsigned int key)
 /* Executed when a mouse button is pressed/released */
 void mouseButton (GLFWwindow* window, int button, int action, int mods)
 {
-//    switch (button) {
-//        case GLFW_MOUSE_BUTTON_LEFT:
-//            if (action == GLFW_RELEASE)
-//                triangle_rot_dir *= -1;
-//            break;
+    switch (button) {
+        case GLFW_MOUSE_BUTTON_LEFT:
+            if (action == GLFW_PRESS) {
+                old_cki = cannon_keyboard_input;
+                drag_pan = true;
+                cannon_keyboard_input = true;
+            } else if (action == GLFW_RELEASE) {
+                cannon_keyboard_input = old_cki;
+                drag_pan = false;
+                drag_oldx = drag_oldy = -1;
+            }
+            break;
 //        case GLFW_MOUSE_BUTTON_RIGHT:
 //            if (action == GLFW_RELEASE) {
 //                rectangle_rot_dir *= -1;
 //            }
 //            break;
-//        default:
-//            break;
-//    }
+        default:
+            break;
+    }
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
