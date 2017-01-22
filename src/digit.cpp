@@ -32,10 +32,10 @@ Digit::Digit(char c, float x, float y)
         l[1] = l[2] = l[3] = true;
         break;
     case '8':
-        l[1] = l[2] = l[3] = l[7] = l[5] = l[4] = l[3] = l[6] = true;
+        l[1] = l[2] = l[7] = l[5] = l[4] = l[3] = l[6] = true;
         break;
     case '9':
-        l[1] = l[2] = l[3] = l[7] = l[4] = l[3] = l[6] = true;
+        l[1] = l[2] = l[7] = l[4] = l[3] = l[6] = true;
         break;
     case '-':
         l[7] = true;

@@ -37,16 +37,16 @@ void reshapeWindow (GLFWwindow* window, int width, int height)
      is different from WindowSize */
     glfwGetFramebufferSize(window, &fbwidth, &fbheight);
 
-        GLfloat fov = 90.0f;
+    // GLfloat fov = 90.0f;
 
-        // sets the viewport of openGL renderer
-        glViewport (0, 0, (GLsizei) fbwidth, (GLsizei) fbheight);
+    // sets the viewport of openGL renderer
+    glViewport (0, 0, (GLsizei) fbwidth, (GLsizei) fbheight);
 
-        // set the projection matrix as perspective
-        /* glMatrixMode (GL_PROJECTION);
+    // set the projection matrix as perspective
+    /* glMatrixMode (GL_PROJECTION);
            glLoadIdentity ();
            gluPerspective (fov, (GLfloat) fbwidth / (GLfloat) fbheight, 0.1, 500.0); */
-        // Store the projection matrix in a variable for future use
+    // Store the projection matrix in a variable for future use
     // Perspective projection for 3D views
     // Matrices.projection = glm::perspective (fov, (GLfloat) fbwidth / (GLfloat) fbheight, 0.1f, 500.0f);
 

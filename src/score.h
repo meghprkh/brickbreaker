@@ -6,13 +6,13 @@
 class Score
 {
 public:
-    Score() {}
+    Score();
     void draw(glm::mat4 VP);
     void update(int score);
     void add(int d = 2);
     void subtract(int d = 1);
 private:
-    int score = 0, digslen = 0;
+    int score, digslen;
     Digit digs[50];
 };
 

@@ -16,7 +16,7 @@ double Laser::pointSign(double x, double y) {
 
 bool Laser::collides(bounding_box_t bbox) {
     int normalized_rotation = ((int) rotation + 360) % 360;
-    if (normalized_rotation < 90 && normalized_rotation > 270) if (bbox.x < x) return false;
+    if (normalized_rotation < 90 || normalized_rotation > 270) { if (bbox.x < x) return false; }
     else if (bbox.x > x) return false;
     return (
         (pointSign(bbox.x - bbox.width/2, bbox.y - bbox.height/2)*pointSign(bbox.x + bbox.width/2, bbox.y + bbox.height/2) <= 0) ||
