@@ -2,18 +2,16 @@
 #define BACKGROUND_H
 
 #include "main.h"
+#include "hexagon.h"
 
 class Background
 {
 public:
     Background() {}
-    Background(double rotation);
+    void init();
     void draw(glm::mat4 VP);
-    void tick();
 private:
-    VAO* object;
-    double rotation;
-    int scale;
+    Hexagon hx[100];
 };
 
 #endif // BACKGROUND_H

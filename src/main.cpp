@@ -190,7 +190,7 @@ void tick_elements() {
         }
 
     mirrors[3].tick();
-    background.tick();
+//    background.tick();
 }
 
 /* Initialize the OpenGL rendering properties */
@@ -200,7 +200,7 @@ void initGL (GLFWwindow* window, int width, int height)
     /* Objects should be created before any other gl function and shaders */
 	// Create the models
 
-    background = Background(0);
+    background.init();
     life.init();
 
     mirrors[0] = Mirror(0, 3, 60);
