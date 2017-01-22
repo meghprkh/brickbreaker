@@ -5,6 +5,7 @@ Mirror::Mirror(float x, float y, float rotation)
 {
     this->position = glm::vec3(x, y, 0);
     this->rotation = rotation;
+    speed = 0.01;
     static const GLfloat vertex_buffer_data [] = {
         0.0,    0, 0,    0,  1.2, 0,
         0.05, 0.15, 0, 0.2,  0.3, 0,
@@ -33,4 +34,9 @@ void Mirror::draw(glm::mat4 VP) {
 
 void Mirror::set_position(float x, float y) {
     this->position = glm::vec3(x, y, 0);
+}
+
+void Mirror::tick() {
+    this->position.x -= speed;
+    this->position.y -= speed;
 }

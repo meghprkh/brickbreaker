@@ -164,6 +164,7 @@ void tick_elements() {
             }
         }
 
+    mirrors[3].tick();
     background.tick();
 }
 
@@ -260,6 +261,7 @@ int main (int argc, char** argv)
                     break;
                 }
             }
+            mirrors[3].speed = -mirrors[3].speed;
         }
 
         // Poll for Keyboard and mouse events
