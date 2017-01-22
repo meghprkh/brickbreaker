@@ -172,6 +172,10 @@ void tick_elements() {
         if (bricks_present[i]) {
             bricks[i].tick();
 
+            // Dont detect collisions with bricks if boxes overlapping
+            if (detect_collision(red_basket.bounding_box(), green_basket.bounding_box()))
+                continue;
+
             bounding_box_t bbox = bricks[i].bounding_box();
             bool red_collision = detect_collision(bbox, red_basket.bounding_box());
             bool green_collision = detect_collision(bbox, green_basket.bounding_box());
