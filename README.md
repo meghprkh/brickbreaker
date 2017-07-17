@@ -1,6 +1,8 @@
 Graphics Assignment 1
 =====================
 
+Brick Breaker 2D game in OpenGL 3. More details in [the statement pdf](Assign1.pdf)
+
 Megh Parikh - 201501184
 =======================
 
@@ -42,5 +44,10 @@ Scoring
 - Collecting incorrect brick in basket = -1
 - Collecting black brick in basket = -1 life and -1 point
 
+License
+-------
+The MIT License https://meghprkh.mit-license.org/
+
+Copyright &copy; 2017 Megh Parikh <meghprkh@gmail.com>
 
 Music Credits: Eric Matyas (http://www.soundimage.org)
