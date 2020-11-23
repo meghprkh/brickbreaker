@@ -31,6 +31,7 @@ using namespace std;
 GLMatrices Matrices;
 GLuint programID;
 GLFWwindow* window;
+bool game_paused;
 
 /**************************
  * Customizable functions *
@@ -260,8 +261,16 @@ int main (int argc, char** argv)
 
     audio_init();
 
+    game_paused = false;
+
     /* Draw in loop */
     while (!glfwWindowShouldClose(window)) {
+        if (game_paused) {
+            // Poll for Keyboard and mouse events
+            glfwPollEvents();
+            continue;
+        }
+
         audio_play();
         // Process timers
 

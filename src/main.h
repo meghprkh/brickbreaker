@@ -29,6 +29,7 @@ struct VAO* create3DObject (GLenum primitive_mode, int numVertices, const GLfloa
 void draw3DObject (struct VAO* vao);
 
 // input.cpp
+extern bool game_paused; // defined in main.cpp
 void keyboard (GLFWwindow* window, int key, int scancode, int action, int mods);
 void keyboardChar (GLFWwindow* window, unsigned int key);
 void mouseButton (GLFWwindow* window, int button, int action, int mods);

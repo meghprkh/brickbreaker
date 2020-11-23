@@ -24,6 +24,7 @@ Controls
 - E - Toggle between mouse cursor follow mode for cannon rotation or keyboard input
 - S/F - Move cannon up/down
 - Space - Shoot Laser
+- P - Pause/Play
 
 
 Extra features

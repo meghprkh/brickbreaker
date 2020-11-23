@@ -25,6 +25,8 @@ void keyboard (GLFWwindow* window, int key, int scancode, int action, int mods)
 {
      // Function is called first on GLFW_PRESS.
 
+    if (game_paused) return;
+
     if (action == GLFW_RELEASE) {
 //        switch (key) {
 //        case GLFW_KEY_C:
@@ -65,6 +67,10 @@ void keyboard (GLFWwindow* window, int key, int scancode, int action, int mods)
 /* Executed for character input (like in text boxes) */
 void keyboardChar (GLFWwindow* window, unsigned int key)
 {
+    if (key == 'P' || key == 'p') game_paused = !game_paused;
+
+    if (game_paused) return;
+
     switch (key) {
     case 'Q':
     case 'q':
@@ -78,6 +84,8 @@ void keyboardChar (GLFWwindow* window, unsigned int key)
 /* Executed when a mouse button is pressed/released */
 void mouseButton (GLFWwindow* window, int button, int action, int mods)
 {
+    if (game_paused) return;
+
     switch (button) {
         case GLFW_MOUSE_BUTTON_LEFT:
             if (action == GLFW_PRESS) {
