@@ -3,6 +3,10 @@ Graphics Assignment 1
 
 Brick Breaker 2D game in OpenGL 3. More details in [the statement pdf](Assign1.pdf)
 
+Has zoom/pan using a 2D Camera, a laser reflecting from mirrors and baskets collecting falling squares.
+
+![demo](demo.gif)
+
 Megh Parikh - 201501184
 =======================
 
